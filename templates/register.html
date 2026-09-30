@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="form-card mx-auto">
+<h2 class="mb-4">Student Registration</h2>
+<form method="post">
+  <label class="form-label">Full Name</label><input class="form-control mb-3" name="full_name" required>
+  <label class="form-label">Matriculation Number</label><input class="form-control mb-3" name="matric_no" required>
+  <label class="form-label">Email</label><input class="form-control mb-3" type="email" name="email" required>
+  <label class="form-label">Password</label><input class="form-control mb-3" type="password" name="password" minlength="6" required>
+  <button class="btn btn-primary w-100">Create Account</button>
+</form>
+</div>
+{% endblock %}

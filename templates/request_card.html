@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Request Card{% endblock %}
+{% block content %}
+<div class="form-card mx-auto">
+<h2>ATM Card Request</h2>
+<p class="text-muted">Enter the reason for your request. Do not enter card PINs, CVVs, card numbers, or banking passwords.</p>
+<form method="post">
+  <label class="form-label">Card Type</label>
+  <input class="form-control mb-3" value="ATM Card" disabled>
+  <label class="form-label">Reason / Request Details</label>
+  <textarea class="form-control mb-3" name="reason" rows="5" placeholder="Example: New card request..." required></textarea>
+  <button class="btn btn-primary w-100">Submit Request</button>
+</form>
+</div>
+{% endblock %}

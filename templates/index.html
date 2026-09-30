@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home - CardTrack{% endblock %}
+{% block content %}
+<div class="hero p-5 rounded-4 mb-4">
+  <h1 class="display-5 fw-bold">Online ATM Card Request & Tracking</h1>
+  <p class="lead">Submit your card request online and monitor its progress from submission to collection.</p>
+  <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">Get Started</a>
+</div>
+<div class="row g-4">
+  <div class="col-md-4"><div class="card h-100 p-3"><h4>Request</h4><p>Submit an ATM card request through your student account.</p></div></div>
+  <div class="col-md-4"><div class="card h-100 p-3"><h4>Track</h4><p>Use your dashboard and tracking code to monitor progress.</p></div></div>
+  <div class="col-md-4"><div class="card h-100 p-3"><h4>Manage</h4><p>Administrators can approve requests and update their status.</p></div></div>
+</div>
+{% endblock %}

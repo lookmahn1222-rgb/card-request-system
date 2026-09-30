@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4">Administrator Dashboard</h2>
+<div class="row g-3 mb-4">
+{% for label, value in [("Total", stats.total), ("Pending", stats.pending), ("Processing", stats.processing), ("Ready", stats.ready), ("Collected", stats.collected)] %}
+<div class="col"><div class="stat-card"><div class="text-muted">{{ label }}</div><div class="display-6 fw-bold">{{ value }}</div></div></div>
+{% endfor %}
+</div>
+<div class="card">
+<div class="card-body">
+<h4>Card Requests</h4>
+<div class="table-responsive">
+<table class="table align-middle">
+<thead><tr><th>Student</th><th>Tracking</th><th>Status</th><th>Submitted</th><th>Update</th></tr></thead>
+<tbody>
+{% for r in requests %}
+<tr>
+<td>{{ r.student.full_name }}<br><small>{{ r.student.matric_no }}</small></td>
+<td>{{ r.tracking_code }}</td>
+<td><span class="badge text-bg-primary">{{ r.status }}</span></td>
+<td>{{ r.created_at.strftime('%d %b %Y') }}</td>
+<td>
+<form method="post" action="{{ url_for('update_request', request_id=r.id) }}" class="d-flex gap-2">
+<select name="status" class="form-select form-select-sm">
+{% for s in ["Pending", "Approved", "Processing", "Ready for Collection", "Collected", "Rejected"] %}
+<option {% if r.status == s %}selected{% endif %}>{{ s }}</option>
+{% endfor %}
+</select>
+<input class="form-control form-control-sm" name="admin_note" placeholder="Note" value="{{ r.admin_note or '' }}">
+<button class="btn btn-sm btn-primary">Save</button>
+</form>
+</td>
+</tr>
+{% else %}<tr><td colspan="5" class="text-center">No requests.</td></tr>{% endfor %}
+</tbody></table>
+</div></div></div>
+{% endblock %}
