@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Request Card{% endblock %}
+{% block content %}
+<div class="form-card mx-auto">
+  <h2>ATM Card Request</h2>
+  <p class="text-muted">Request fee: <strong>₦2,000</strong>. After submitting this form, transfer the fee to the account shown on the payment page. Do not enter card PINs, CVVs, card numbers, or banking passwords.</p>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="form-label" for="card_type">Card Type</label>
+    <select class="form-select mb-3" id="card_type" name="card_type" required>
+      <option value="">Select card type</option>
+      <option value="Verve">Verve</option>
+      <option value="Visa">Visa</option>
+      <option value="MasterCard">MasterCard</option>
+    </select>
+    <label class="form-label" for="delivery_address">Delivery Address</label>
+    <textarea class="form-control mb-3" id="delivery_address" name="delivery_address" rows="3" maxlength="1000" required placeholder="Enter the address for card delivery"></textarea>
+    <label class="form-label" for="reason">Reason / Request Details</label>
+    <textarea class="form-control mb-3" id="reason" name="reason" rows="4" maxlength="2000" required placeholder="Explain why you need the card"></textarea>
+    <button class="btn btn-primary w-100" type="submit">Submit Request and Continue to Payment</button>
+  </form>
+</div>
+{% endblock %}

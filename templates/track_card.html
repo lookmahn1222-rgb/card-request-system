@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Track Request{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+<div class="card-body">
+<h2>Request Tracking</h2>
+<p><strong>Tracking Code:</strong> {{ card_request.tracking_code }}</p>
+<p><strong>Card Type:</strong> {{ card_request.card_type }}</p>
+<p><strong>Delivery Address:</strong> {{ card_request.delivery_address or "Not provided" }}</p>
+<p><strong>Request Fee:</strong> ₦{{ "{:,}".format(card_request.fee_amount or 2000) }}</p>
+<p><strong>Payment Status:</strong> {{ card_request.payment_status or "Unpaid" }}</p>
+{% if card_request.payment_reference %}<p><strong>Transfer Reference:</strong> {{ card_request.payment_reference }}</p>{% endif %}
+{% if card_request.payment_admin_note %}<div class="alert alert-info"><strong>Payment note:</strong> {{ card_request.payment_admin_note }}</div>{% endif %}
+<p><strong>Submitted:</strong> {{ card_request.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+<div class="my-4">
+  <div class="status-line">
+  {% for s in ["Pending", "Approved", "Processing", "Ready for Collection", "Collected"] %}
+    <div class="status-step {% if s == card_request.status %}active{% endif %}">
+      <div class="circle"></div><small>{{ s }}</small>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+<div class="alert alert-secondary"><strong>Current status:</strong> {{ card_request.status }}</div>
+{% if card_request.admin_note %}<div class="alert alert-info"><strong>Administrator note:</strong> {{ card_request.admin_note }}</div>{% endif %}
+{% if card_request.payment_status != "Verified" and not current_user.is_admin %}<a class="btn btn-success" href="{{ url_for('submit_payment_reference', request_id=card_request.id) }}">Submit / Update Payment Reference</a>{% endif %}
+<a class="btn btn-outline-primary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div></div>
+{% endblock %}

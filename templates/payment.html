@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Bank Transfer Payment{% endblock %}
+{% block content %}
+<div class="form-card mx-auto">
+    <h2>Bank Transfer Payment</h2>
+    <p>Card request fee: <strong>₦{{ "{:,}".format(fee) }}</strong></p>
+
+    <div class="alert alert-info">
+        <h5>Transfer to this account</h5>
+        <p class="mb-1"><strong>Bank:</strong> {{ bank_name }}</p>
+        <p class="mb-1"><strong>Account name:</strong> {{ account_name }}</p>
+        <p class="mb-1"><strong>Account number:</strong> {{ account_number }}</p>
+        <p class="mb-0">Use the exact fee shown above. After transferring, enter your bank transaction reference below.</p>
+    </div>
+
+    <p><strong>Tracking code:</strong> {{ card_request.tracking_code }}</p>
+    <p><strong>Payment status:</strong> {{ card_request.payment_status or "Unpaid" }}</p>
+
+    {% if card_request.payment_status != "Verified" %}
+    <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label class="form-label" for="payment_reference">Bank transfer reference</label>
+        <input class="form-control mb-3" id="payment_reference" name="payment_reference"
+               maxlength="100" required
+               value="{{ card_request.payment_reference or '' }}"
+               placeholder="Enter the transaction/reference number">
+        <button type="submit" class="btn btn-primary w-100">Submit for Verification</button>
+    </form>
+    {% else %}
+    <div class="alert alert-success">Your payment has been verified.</div>
+    {% endif %}
+</div>
+{% endblock %}

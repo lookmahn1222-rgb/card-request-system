@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Payment Verification{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Payment Verification</h2>
+    <p>Check each transfer in the actual bank account before marking it verified.</p>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Tracking Code</th>
+                    <th>Applicant</th>
+                    <th>Card Type</th>
+                    <th>Fee</th>
+                    <th>Transfer Reference</th>
+                    <th>Payment Status</th>
+                    <th>Admin Verification</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for r in requests %}
+                <tr>
+                    <td>{{ r.tracking_code }}</td>
+                    <td>{{ r.student.full_name }}</td>
+                    <td>{{ r.card_type }}</td>
+                    <td>₦{{ "{:,}".format(r.fee_amount or 2000) }}</td>
+                    <td>{{ r.payment_reference or "Not submitted" }}</td>
+                    <td>{{ r.payment_status or "Unpaid" }}</td>
+                    <td style="min-width: 260px;">
+                        {% if r.payment_status != "Verified" %}
+                        <form method="post" action="{{ url_for('verify_payment', request_id=r.id) }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <textarea class="form-control mb-2" name="payment_admin_note" rows="2"
+                                      placeholder="Optional admin note"></textarea>
+                            <button class="btn btn-success btn-sm" type="submit" name="decision" value="verify"
+                                    {% if not r.payment_reference %}disabled{% endif %}>
+                                Verify payment
+                            </button>
+                            <button class="btn btn-danger btn-sm" type="submit" name="decision" value="reject">
+                                Reject
+                            </button>
+                        </form>
+                        {% else %}
+                            <span class="text-success">Verified</span>
+                            {% if r.payment_admin_note %}<div class="small">{{ r.payment_admin_note }}</div>{% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="text-center">No card requests found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
